@@ -1,8 +1,10 @@
-> If you see this section, you've just created a repository using [PoC Innovation's Open-Source project template](https://github.com/PoCInnovation/open-source-project-template). Check the [getting started guide](./.github/getting-started.md).
-
 # Virtual No Ads
 
-[Project's description]
+Virtual No Ads is a project aimed at providing a more streamlined and pleasant browsing experience by filtering out unwanted ads from websites. It consists of two main parts:
+
+1) **Private WiFi network with Raspberry Pi:** Using a Raspberry Pi, Virtual No Ads creates a private WiFi network that filters out ad packages from websites. This means that any device connected to this network will have ads removed before they even reach the user's device, resulting in a faster and more enjoyable browsing experience.
+
+2) **Adblock software:** Virtual No Ads also provides a software component that can be installed on devices directly. This software functions as a traditional adblocker, filtering out ads as they are loaded on websites. The software is designed to be lightweight and easy to use, and can be customized to allow or block specific types of ads.
 
 ## How does it work?
 
@@ -31,11 +33,11 @@ If you're interested in how the project is organized at a higher level, please c
 ## Our PoC team ❤️
 
 Developers
-| [<img src="https://github.com/MrZalTy.png?size=85" width=85><br><sub>[Developer's name]</sub>](https://github.com/MrZalTy) | [<img src="https://github.com/MrZalTy.png?size=85" width=85><br><sub>[Developer's name]</sub>](https://github.com/MrZalTy) | [<img src="https://github.com/MrZalTy.png?size=85" width=85><br><sub>[Developer's name]</sub>](https://github.com/MrZalTy)
+| [<img src="https://github.com/Baragouin.png?size=85" width=85><br><sub>Timothé MEDICO</sub>](https://github.com/Baragouin) | [<img src="https://github.com/louonezime.png?size=85" width=85><br><sub>Lou ONÉZIME</sub>](https://github.com/louonezime) | [<img src="https://github.com/Igoatyouu.png?size=85" width=85><br><sub>Axel TACHEAU</sub>](https://github.com/Igoatyouu)
 | :---: | :---: | :---: |
 
 Manager
-| [<img src="https://github.com/adrienfort.png?size=85" width=85><br><sub>[Manager's name]</sub>](https://github.com/adrienfort)
+| [<img src="https://github.com/lennyvong.png?size=85" width=85><br><sub>Lenny VONGPHOUTHONE</sub>](https://github.com/lennyvong)
 | :---: |
 
 <h2 align=center>
