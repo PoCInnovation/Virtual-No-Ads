@@ -1,0 +1,18 @@
+name: Rust Checker
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - name: Check code compilation
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
