@@ -1,0 +1,13 @@
+#! /bin/bash
+
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+# The 'cap_net_raw' capability allows the executable file to perform raw network I/O operations.
+
+# The 'cap_net_admin' capability allows the executable file to perform administrative network tasks such
+# as configuring network interfaces, modifying routing tables, and setting up network firewalls.
+
+setcap cap_net_raw,cap_net_admin=eip target/debug/virtual-no-ads
