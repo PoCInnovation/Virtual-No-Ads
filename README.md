@@ -14,15 +14,25 @@ Virtual No Ads is a project aimed at providing a more streamlined and pleasant b
 
 ### Installation
 
-[Explain how to install all of the project's dependencies]
+If you want to create a executable, simply run the following command:
+
+```
+cargo build
+```
+
+The executable can be found at the following path: `target/debug/virtual-no-ads(.exe)`
 
 ### Quickstart
 
-[Explain how to run this project]
+If you simply want to start the application without compiling it, run the following command:
+
+```
+cargo run
+```
 
 ### Usage
 
-[Explain how to use this project]
+Once Virtual No Ads is up and running, you can start browsing the web with fewer ads. If you encounter any issues or have questions about the project, please refer to the documentation or contact the project manager.
 
 ## Get involved
 
