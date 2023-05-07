@@ -1,0 +1,17 @@
+[package]
+name = "virtual-no-ads"
+version = "0.1.0"
+authors = [
+  "Timothé MEDICO",
+  "Lou ONÉZIME",
+  "Axel TACHEAU"
+]
+edition = "2021"
+readme = "README.md"
+repository = "https://github.com/PoCInnovation/Virtual-No-Ads"
+license-file = "LICENSE"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pcap = "1.0.0"
