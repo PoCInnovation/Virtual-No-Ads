@@ -3,6 +3,8 @@ use std::io;
 use std::io::BufRead;
 use std::process;
 use std::net::IpAddr;
+use std::collections::HashSet;
+use std::env;
 
 use pnet::datalink::{self, Channel};
 use pnet::packet::Packet;
@@ -15,16 +17,24 @@ use dns_lookup::lookup_addr;
 
 fn main()
 {
-    let mut vec_ads: Vec<String> = Vec::new();
+    let args: Vec<String> = env::args().collect();
+    let mut blacklist: Vec<String> = Vec::new();
 
-    match parse_adsfile("assets/adsdomain.txt", &mut vec_ads) {
+    if args.len() != 2 {
+        eprintln!("USAGE: ./virtual-no-ads <interface>");
+        process::exit(84)
+    }
+
+    match parse_adsfile("assets/adsdomain.txt", &mut blacklist) {
         Ok(_) => {},
         Err(_) => process::exit(84),
     };
-    catch_packets(vec_ads);
+    let blacklist_set: HashSet<String> = blacklist.into_iter().collect();
+
+    catch_packets(&args[1], blacklist_set);
 }
 
-fn parse_adsfile(filename: &str, vec_ads: &mut Vec<String>) -> Result<(), ()>
+fn parse_adsfile(filename: &str, domains_list: &mut Vec<String>) -> Result<(), ()>
 {
     let file = File::open(filename);
 
@@ -40,7 +50,7 @@ fn parse_adsfile(filename: &str, vec_ads: &mut Vec<String>) -> Result<(), ()>
 
     for line in lines {
         match line {
-            Ok(content) => vec_ads.push(content),
+            Ok(content) => domains_list.push(content),
             Err(error) => {
                 eprintln!("Error while reading content of ads_domain file: {}", error);
                 return Err(());
@@ -50,13 +60,13 @@ fn parse_adsfile(filename: &str, vec_ads: &mut Vec<String>) -> Result<(), ()>
     Ok(())
 }
 
-fn catch_packets(vec_ads: Vec<String>)
+fn catch_packets(interface_name: &str, blacklist: HashSet<String>)
 {
     let interfaces = datalink::interfaces();
 
     let interface = interfaces
         .into_iter()
-        .find(|iface| iface.name == "wlo1")
+        .find(|iface| iface.name == interface_name)
         .expect("Interface not found");
 
     let (_tx, mut rx) = match datalink::channel(&interface, Default::default()) {
@@ -81,7 +91,10 @@ fn catch_packets(vec_ads: Vec<String>)
                 let dst_port = tcp.get_destination();
                 let domain_name = lookup_addr(&src_ip).unwrap_or_else(|_| String::from("Unknown"));
 
-                if vec_ads.iter().any(|element| domain_name.contains(element)) {
+                if src_ipv4.is_loopback() || src_ipv4.is_link_local() {
+                    continue;
+                }
+                if blacklist.contains(&domain_name) {
                     continue;
                 }
                 println!("Source IP: {}", src_ipv4);
