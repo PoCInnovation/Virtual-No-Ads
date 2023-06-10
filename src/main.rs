@@ -18,23 +18,22 @@ use dns_lookup::lookup_addr;
 fn main()
 {
     let args: Vec<String> = env::args().collect();
-    let mut blacklist: Vec<String> = Vec::new();
+    let mut blacklist_set: HashSet<String> = HashSet::new();
 
     if args.len() != 2 {
         eprintln!("USAGE: ./virtual-no-ads <interface>");
         process::exit(84)
     }
 
-    match parse_adsfile("assets/adsdomain.txt", &mut blacklist) {
+    match parse_adsfile("assets/adsdomain.txt", &mut blacklist_set) {
         Ok(_) => {},
         Err(_) => process::exit(84),
     };
-    let blacklist_set: HashSet<String> = blacklist.into_iter().collect();
 
     catch_packets(&args[1], blacklist_set);
 }
 
-fn parse_adsfile(filename: &str, domains_list: &mut Vec<String>) -> Result<(), ()>
+fn parse_adsfile(filename: &str, domains_list: &mut HashSet<String>) -> Result<(), ()>
 {
     let file = File::open(filename);
 
@@ -50,7 +49,9 @@ fn parse_adsfile(filename: &str, domains_list: &mut Vec<String>) -> Result<(), (
 
     for line in lines {
         match line {
-            Ok(content) => domains_list.push(content),
+            Ok(content) => {
+               domains_list.insert(content);
+            }
             Err(error) => {
                 eprintln!("Error while reading content of ads_domain file: {}", error);
                 return Err(());
