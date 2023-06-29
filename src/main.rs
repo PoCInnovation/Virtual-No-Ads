@@ -20,12 +20,12 @@ fn main()
     let args: Vec<String> = env::args().collect();
     let mut blacklist_set: HashSet<String> = HashSet::new();
 
-    if args.len() != 2 {
-        eprintln!("USAGE: ./virtual-no-ads <interface>");
+    if args.len() < 3 {
+        eprintln!("USAGE: ./virtual-no-ads <interface> <domain_list>...");
         process::exit(84)
     }
 
-    match parse_adsfile("assets/adsdomain.txt", &mut blacklist_set) {
+    match parse_adsfile(&args, &mut blacklist_set) {
         Ok(_) => {},
         Err(_) => process::exit(84),
     };
@@ -33,28 +33,30 @@ fn main()
     catch_packets(&args[1], blacklist_set);
 }
 
-fn parse_adsfile(filename: &str, domains_list: &mut HashSet<String>) -> Result<(), ()>
+fn parse_adsfile(arguments: &Vec<String>, domains_list: &mut HashSet<String>) -> Result<(), ()>
 {
-    let file = File::open(filename);
+    for i in 2..arguments.len() {
+        let file = File::open(&arguments[i]);
 
-    let file = match file {
-        Ok(file) => file,
-        Err(error) => {
-            eprintln!("Error while opening ads_domains file: {error}");
-            return Err(());
-        }
-    };
-
-    let lines = io::BufReader::new(file).lines();
-
-    for line in lines {
-        match line {
-            Ok(content) => {
-               domains_list.insert(content);
-            }
+        let file = match file {
+            Ok(file) => file,
             Err(error) => {
-                eprintln!("Error while reading content of ads_domain file: {}", error);
+                eprintln!("Error while opening ads_domains file: {error}");
                 return Err(());
+            }
+        };
+
+        let lines = io::BufReader::new(file).lines();
+
+        for line in lines {
+            match line {
+                Ok(content) => {
+                    domains_list.insert(content);
+                }
+                Err(error) => {
+                    eprintln!("Error while reading content of ads_domain file: {}", error);
+                    return Err(());
+                }
             }
         }
     }
