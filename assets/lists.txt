@@ -1,0 +1,3 @@
+https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt
+https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt
+https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt
