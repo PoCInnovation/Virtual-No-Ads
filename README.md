@@ -6,9 +6,11 @@ Virtual No Ads is a project aimed at providing a more streamlined and pleasant b
 
 2) **Adblock software:** Virtual No Ads also provides a software component that can be installed on devices directly. This software functions as a traditional adblocker, filtering out ads as they are loaded on websites. The software is designed to be lightweight and easy to use, and can be customized to allow or block specific types of ads.
 
+While Pi-hole offers an implementation using a Raspberry Pi that blocks ads, our project goes a step further by implementing the WireGuard protocol on top of it. While blocking ads, we also provide the security features of WireGuard, creating a simplified desktop application to enable or disable the VPN.
+
 ## How does it work?
 
-[Explain how this project is working]
+As we connect a Raspberry Pi to Wi-Fi, it will intercept packets using the WireGuard protocol while filtering these packets to remove or sort ads; eventually emitting a Wi-Fi signal. Users can connect to this Wi-Fi network with any device, ensuring a secure network (thanks to WireGuard) and ad-free/ filtered content.
 
 ## Getting Started
 
