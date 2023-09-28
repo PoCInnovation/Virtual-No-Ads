@@ -10,6 +10,8 @@ use pnet::packet::tcp::TcpPacket;
 use pnet::packet::ip::IpNextHeaderProtocols;
 
 use dns_lookup::lookup_addr;
+use trust_dns_resolver::config;
+use trust_dns_resolver::proto::rr::domain;
 
 pub fn parse_adsfile(arguments: &Vec<String>, domains_list: &mut HashSet<String>) -> Result<(), ()>
 {
@@ -28,12 +30,9 @@ pub fn parse_adsfile(arguments: &Vec<String>, domains_list: &mut HashSet<String>
     Ok(())
 }
 
-fn config_hosts() -> Result<(), ()> {
+fn config_hosts(domain_name: &str) -> Result<(), ()> {
     let hosts_path = "/etc/hosts";
-
-    // Domains to block
     let domains_to_block: HashSet<&str> = vec!["ads.example.com", "adserver.net"].into_iter().collect();
-
     let block_ip = IpAddr::V4(std::net::Ipv4Addr::new(127, 0, 0, 1));
 
     let current_content = read_to_string(&hosts_path).map_err(|error| {
@@ -50,7 +49,7 @@ fn config_hosts() -> Result<(), ()> {
         if parts.len() >= 2 {
             let domain = parts[1];
             
-            if domains_to_block.contains(&domain) {
+            if domain_name == domain {
                 let new_line = format!("{} {}\n", block_ip, domain);
                 new_content.push_str(&new_line);
             } else {
@@ -100,6 +99,7 @@ pub fn catch_packets(interface_name: &str, blacklist: HashSet<String>)
                     continue;
                 }
                 if blacklist.contains(&domain_name) {
+                    config_hosts(domain_name);
                     continue;
                 }
                 println!("Source IP: {}", src_ipv4);
