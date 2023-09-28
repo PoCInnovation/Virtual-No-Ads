@@ -15,11 +15,10 @@ fn main()
         process::exit(84)
     }
 
-    match dns_server::parse_adsfile(&args, &mut blacklist_set) {
+    match block_ads::parse_adsfile(&args, &mut blacklist_set) {
         Ok(_) => {},
         Err(_) => process::exit(84),
     };
 
-    dns_server::catch_packets(&args[1], blacklist_set);
-    // block_ads::catch_packets(&args[1], blacklist_set);
+    block_ads::catch_packets(&args[1], blacklist_set);
 }
