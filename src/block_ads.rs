@@ -3,6 +3,7 @@ use std::io;
 use std::io::BufRead;
 use std::net::IpAddr;
 use std::collections::HashSet;
+use std::fs::read_to_string;
 
 use pnet::datalink::{self, Channel};
 use pnet::packet::Packet;
@@ -16,28 +17,53 @@ use dns_lookup::lookup_addr;
 pub fn parse_adsfile(arguments: &Vec<String>, domains_list: &mut HashSet<String>) -> Result<(), ()>
 {
     for i in 2..arguments.len() {
-        let file = File::open(&arguments[i]);
+        let file = read_to_string(&arguments[i]).map_err(|error| {
+            eprintln!("Error while opening ads_domains file: {}", error);
+        })?;
 
-        let file = match file {
-            Ok(file) => file,
-            Err(error) => {
-                eprintln!("Error while opening ads_domains file: {error}");
-                return Err(());
+        for content in file.lines() {
+            if content.is_empty() {
+                continue;
             }
-        };
+            domains_list.insert(content.to_string());
+        }
+    }
+    Ok(())
+}
 
-        let lines = io::BufReader::new(file).lines();
+fn config_hosts() -> Result<(), ()> {
+    let hosts_path = "/etc/hosts";
 
-        for line in lines {
-            match line {
-                Ok(content) => {
-                    domains_list.insert(content);
-                }
-                Err(error) => {
-                    eprintln!("Error while reading content of ads_domain file: {}", error);
-                    return Err(());
-                }
+    // Domains to block
+    let domains_to_block: HashSet<&str> = vec!["ads.example.com", "adserver.net"].into_iter().collect();
+
+    let block_ip = IpAddr::V4(std::net::Ipv4Addr::new(127, 0, 0, 1));
+
+    let current_content = read_to_string(&hosts_path).map_err(|error| {
+        eprintln!("Error while opening hosts file: {}", error);
+    })?;
+
+    let mut new_content = String::new();
+    for line in current_content.lines() {
+        if line.trim().is_empty() {
+            new_content.push_str("\n");
+            continue;
+        }
+        let parts: Vec<&str> = line.split_whitespace().collect();
+        if parts.len() >= 2 {
+            let ip = parts[0];
+            let domain = parts[1];
+            
+            if domains_to_block.contains(&domain) {
+                let new_line = format!("{} {}\n", block_ip, domain);
+                new_content.push_str(&new_line);
+            } else {
+                new_content.push_str(&line);
+                new_content.push_str("\n");
             }
+        } else {
+            new_content.push_str(&line);
+            new_content.push_str("\n");
         }
     }
     Ok(())

@@ -14,5 +14,7 @@ license-file = "LICENSE"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-pnet = "0.33.0"
+pnet = "0.34.0"
 dns-lookup = "2.0.2"
+trust-dns-resolver = "0.23.0"
+tokio = { version = "1", features = ["full"] }

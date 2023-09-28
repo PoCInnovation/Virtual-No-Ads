@@ -3,6 +3,7 @@ use std::collections::HashSet;
 use std::env;
 
 pub mod block_ads;
+pub mod dns_server;
 
 fn main()
 {
@@ -14,10 +15,11 @@ fn main()
         process::exit(84)
     }
 
-    match block_ads::parse_adsfile(&args, &mut blacklist_set) {
+    match dns_server::parse_adsfile(&args, &mut blacklist_set) {
         Ok(_) => {},
         Err(_) => process::exit(84),
     };
 
-    block_ads::catch_packets(&args[1], blacklist_set);
+    dns_server::catch_packets(&args[1], blacklist_set);
+    // block_ads::catch_packets(&args[1], blacklist_set);
 }

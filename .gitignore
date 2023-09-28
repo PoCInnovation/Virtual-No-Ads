@@ -1,4 +1,7 @@
+#editors
 .idea/
 .vscode/
 
+#dependencies
 target/
+Cargo.lock
