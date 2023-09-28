@@ -3,7 +3,6 @@ use std::collections::HashSet;
 use std::env;
 
 pub mod block_ads;
-pub mod dns_server;
 
 fn main()
 {

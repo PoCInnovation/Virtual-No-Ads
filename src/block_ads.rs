@@ -1,6 +1,3 @@
-use std::fs::File;
-use std::io;
-use std::io::BufRead;
 use std::net::IpAddr;
 use std::collections::HashSet;
 use std::fs::read_to_string;
@@ -51,7 +48,6 @@ fn config_hosts() -> Result<(), ()> {
         }
         let parts: Vec<&str> = line.split_whitespace().collect();
         if parts.len() >= 2 {
-            let ip = parts[0];
             let domain = parts[1];
             
             if domains_to_block.contains(&domain) {
