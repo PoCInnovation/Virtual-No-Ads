@@ -29,10 +29,14 @@ The executable can be found at the following path: `target/debug/virtual-no-ads(
 If you simply want to start the application without compiling it, run the following command:
 
 ```
-cargo run
+cargo run <arguments>
 ```
 
 ### Usage
+
+```
+./virtual-no-ads <interface> <domain_list>...
+```
 
 Once Virtual No Ads is up and running, you can start browsing the web with fewer ads. If you encounter any issues or have questions about the project, please refer to the documentation or contact the project manager.
 
