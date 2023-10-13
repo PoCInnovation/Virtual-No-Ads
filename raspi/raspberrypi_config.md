@@ -1,3 +1,5 @@
+# Raspberry Pi Config
+
 1. Install Rasbian on your Raspberry Pi if you haven't already.
 
 2. Install the necessary packages: (You will need internet access)
@@ -61,11 +63,15 @@ $ sudo nano /etc/network/interfaces
 Add the following lines to set up the wlan0 interface as a static IP address:
 
 ```
-allow-hotplug wlan0
+auto wlan0
 iface wlan0 inet static
     address 192.168.4.1
     netmask 255.255.255.0
+    dns-nameservers 8.8.8.8 8.8.4.4
+    wireless-channel 7
+    wireless-essid <SSID>
 ```
+(last 3 lines aren't necessary, added to avoid troubleshooting)
 
 6. Enable IP Forwarding:
 
@@ -88,25 +94,26 @@ $ sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 ```
 
 Save the rules for reboots:
-
-sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+```
+$ sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+```
 
 8. Start Services and Enable at Boot:
 
 ```
-sudo systemctl start hostapd
-sudo systemctl start dnsmasq
+$ sudo systemctl start hostapd
+$ sudo systemctl start dnsmasq
 ```
 
 ```
-sudo systemctl enable hostapd
-sudo systemctl enable dnsmasq
+$ sudo systemctl enable hostapd
+$ sudo systemctl enable dnsmasq
 ```
 
 Reboot your Raspberry Pi to apply the changes:
 
 ```
-sudo reboot
+$ sudo reboot
 ```
 
 After, it should create a Wi-Fi access point with the SSID and passphrase you specified.
