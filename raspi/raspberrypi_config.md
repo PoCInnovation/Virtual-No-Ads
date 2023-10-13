@@ -2,12 +2,14 @@
 
 1. Install Rasbian on your Raspberry Pi if you haven't already.
 
+
 2. Install the necessary packages: (You will need internet access)
 
 ```
 $ sudo apt-get update
 $ sudo apt-get install hostapd dnsmasq
 ```
+
 
 3. dnsmasq
 
@@ -25,6 +27,7 @@ dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
 domain=wlan
 address=/gw.wlan/192.168.4.1
 ```
+
 
 4. hostapd
 
@@ -52,6 +55,7 @@ wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 ```
 
+
 5. Network Interfaces:
 
 Open the network interfaces file:
@@ -73,6 +77,7 @@ iface wlan0 inet static
 ```
 (last 3 lines aren't necessary, added to avoid troubleshooting)
 
+
 6. Enable IP Forwarding:
 
 Edit the sysctl configuration file:
@@ -82,6 +87,7 @@ $ sudo nano /etc/sysctl.conf
 ```
 
 And uncomment the line net.ipv4.ip_forward=1. (remove the # at the beginning of the line)
+
 
 7. Enable NAT (Network Address Translation):
 
@@ -97,6 +103,7 @@ Save the rules for reboots:
 ```
 $ sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 ```
+
 
 8. Start Services and Enable at Boot:
 

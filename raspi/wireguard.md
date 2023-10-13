@@ -7,19 +7,21 @@ $ sudo apt-get update
 $ sudo apt install wireguard
 ```
 
+
 2. Set Up WireGuard:
 
 Generate WireGuard keys, a public and private key:
 
 ```
-$ wg genkey | tee privatekey | wg pubkey > publickey
+$ wg genkey | tee <PRIVATE_KEY> | wg pubkey > <PUBLIC_KEY>
 ```
+(replace <PRIVATE_KEY> and <PUBLIC_KEY> with your desired filenames)
 
 This command generates a private key and corresponding public key.
+(You can use this to generate a private and public key pair for each client you want to add to the Wireguard VPN and for the server)
 
-Replace privatekey and publickey with your desired filenames.
 
-3. Create the WireGuard configuration file (e.g., /etc/wireguard/wg0.conf):
+3. Create the WireGuard configuration file (like /etc/wireguard/wg0.conf):
 
 ```
 $ sudo nano /etc/wireguard/wg0.conf
@@ -37,14 +39,36 @@ PrivateKey = <SERVER_PRIVATE_KEY>
 AllowedIPs = 10.0.0.2/32
 PublicKey = <CLIENT_PUBLIC_KEY>
 ```
+(Every peer is a new client added to the Wireguard server, they should include the public of the client and specify the allowed IP addresses for the client)
 
-4. Configure Firewall Rules
+
+4. Link clients to WireGuard VPN
+
+Create a new configuration file for each client, and add the necessary configurations:
+
+```
+[Interface]
+PrivateKey = <CLIENT_PRIVATE_KEY>
+Address = 10.0.0.2/32
+DNS = 8.8.8.8
+
+[Peer]
+PublicKey = <SERVER_PUBLIC_KEY>
+Endpoint = <SERVER_IP_ADDR>:51820
+AllowedIPs = 0.0.0.0/0, ::/0
+```
+
+(On mobile, you will have to input these configurations through the WireGuard App).
+
+
+5. Configure Firewall Rules
 
 Flush existing rules and chains
 
 ```
 $ sudo iptables -F
 $ sudo iptables -X
+```
 
 Set default policies to drop all traffic
 
@@ -52,6 +76,7 @@ Set default policies to drop all traffic
 $ sudo iptables -P INPUT DROP
 $ sudo iptables -P FORWARD DROP
 $ sudo iptables -P OUTPUT DROP
+```
 
 Allow loopback traffic
 
@@ -93,13 +118,15 @@ Set up NAT for WireGuard interface
 $ sudo iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
 ```
 
-Save the rules
+
+6. Save the rules
 
 ```
 $ sudo sh -c "iptables-save > /etc/iptables/rules.v4"
 ```
 
-5. Activate the Wireguard Connection on the Clients
+
+7. Activate the Wireguard Connection on the Clients
 
 ```
 $ sudo wg-quick up wg0
