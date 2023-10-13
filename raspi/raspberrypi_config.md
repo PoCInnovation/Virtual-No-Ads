@@ -91,7 +91,7 @@ And uncomment the line net.ipv4.ip_forward=1. (remove the # at the beginning of 
 
 7. Enable NAT (Network Address Translation):
 
-Run the following iptables commands to enable NAT:
+Run the following iptables commands to enable NAT (or instead run the bash script provided [here](<link>) at Virtual-No-Ads/raspi/iptables_conf.sh automatically)
 
 ```
 $ sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
