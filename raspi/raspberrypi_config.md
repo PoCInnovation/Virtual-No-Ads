@@ -26,6 +26,7 @@ interface=wlan0
 dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
 domain=wlan
 address=/gw.wlan/192.168.4.1
+addn-hosts=/etc/hosts
 ```
 
 

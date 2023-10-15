@@ -1,4 +1,5 @@
 #!/bin/bash
+
 function config_wireguard() {
     echo "Flushing existing rules and chains..."
     sudo iptables -F
@@ -33,17 +34,17 @@ function config_wireguard() {
 
 }
 
-if ["$1" == "wireguard"]; then
+if [ "$1" = "wireguard" ]; then
     config_wireguard
-elif ["$2" == "signal-only"]; then
+elif [ "$1" = "signal-only" ]; then
     echo "Enabling IP Masquerading..."
     sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
     sudo iptables -A FORWARD -i wlan0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
     sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 else
-    echo "USAGE:\tsudo bash iptables_conf.sh [opt]"
-    echo "\n[opt] = wireguard or signal-only depending if you want to configure WireGuard"
+    echo "USAGE:    sudo bash iptables_conf.sh [opt]"
+    echo "[opt] = wireguard or signal-only depending if you want to configure WireGuard"
     exit 1
 fi
 
-echo "sudo sh -c "iptables-save > /etc/iptables/rules.v4"
+sudo sh -c "iptables-save > /etc/iptables/rules.v4"

@@ -132,3 +132,8 @@ $ sudo sh -c "iptables-save > /etc/iptables/rules.v4"
 ```
 $ sudo wg-quick up wg0
 ```
+
+8. Enable WireGuard on Boot
+```
+$ sudo systemctl enable wg-quick@your-config-file
+```
