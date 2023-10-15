@@ -13,6 +13,12 @@ $ sudo apt-get install hostapd dnsmasq
 
 3. dnsmasq
 
+Create a backup of the original configuration file:
+
+```
+$ sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+```
+
 Open the dnsmasq configuration file for editing with:
 
 ```
@@ -54,6 +60,17 @@ wpa_passphrase=<SSID_PWD>
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP
 rsn_pairwise=CCMP
+```
+
+Update the hostapd file:
+
+```
+$ sudo nano /etc/default/hostapd
+```
+
+Find the line #DAEMON_CONF="" and update it to:
+```
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
 ```
 
 
@@ -105,8 +122,19 @@ Save the rules for reboots:
 $ sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 ```
 
+8. Setup IP Tables
 
-8. Start Services and Enable at Boot:
+```
+$ sudo nano /etc/rc.local
+```
+
+Add this line before the *exit 0* line:
+```
+iptables-restore < /etc/iptables.ipv4.nat
+```
+
+
+9. Start Services and Enable at Boot:
 
 ```
 $ sudo systemctl start hostapd

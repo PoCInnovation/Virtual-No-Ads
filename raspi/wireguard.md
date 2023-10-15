@@ -127,13 +127,26 @@ $ sudo sh -c "iptables-save > /etc/iptables/rules.v4"
 ```
 
 
-7. Activate the Wireguard Connection on the Clients
+7. Setup IP Tables
+
+```
+$ sudo nano /etc/rc.local
+```
+
+Add this line before the *exit 0* line:
+```
+iptables-restore < /etc/iptables.ipv4.nat
+```
+
+
+8. Activate the Wireguard Connection on the Clients
 
 ```
 $ sudo wg-quick up wg0
 ```
 
-8. Enable WireGuard on Boot
+
+9. Enable WireGuard on Boot
 ```
 $ sudo systemctl enable wg-quick@your-config-file
 ```
