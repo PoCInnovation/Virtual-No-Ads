@@ -14,7 +14,17 @@ As we connect a Raspberry Pi to Wi-Fi, it will intercept packets using the WireG
 
 ### Installation
 
-If you want to create a executable, simply run the following command:
+# Raspberry Pi
+
+Clone this repository
+
+```
+git clone git@github.com:PoCInnovation/Virtual-No-Ads.git
+```
+
+Follow the instructions within the raspi [directory](<https://github.com/PoCInnovation/Virtual-No-Ads/tree/main/raspi>)
+
+Then, if you want to create a executable, simply run the following command:
 
 ```
 cargo build

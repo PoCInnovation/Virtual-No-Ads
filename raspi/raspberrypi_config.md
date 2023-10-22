@@ -25,6 +25,12 @@ Open the dnsmasq configuration file for editing with:
 $ sudo nano /etc/dnsmasq.conf
 ```
 
+Edit the line starting with *resolv-file* with:
+
+```
+resolv-file=/run/dnsmasq/resolv.conf
+```
+
 And add the following lines to the file and save the file before exiting:
 
 ```
@@ -109,7 +115,7 @@ And uncomment the line net.ipv4.ip_forward=1. (remove the # at the beginning of 
 
 7. Enable NAT (Network Address Translation):
 
-Run the following iptables commands to enable NAT (or instead run the bash script provided [here](<link>) at Virtual-No-Ads/raspi/iptables_conf.sh automatically)
+Run the following iptables commands to enable NAT (or instead run the bash script provided [here](<https://github.com/PoCInnovation/Virtual-No-Ads/blob/main/raspi>) at [Virtual-No-Ads/raspi/iptables_conf.sh](<https://github.com/PoCInnovation/Virtual-No-Ads/blob/main/raspi/iptables_conf.sh>) automatically)
 
 ```
 $ sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE

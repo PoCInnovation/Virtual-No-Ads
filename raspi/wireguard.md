@@ -62,7 +62,7 @@ AllowedIPs = 0.0.0.0/0, ::/0
 
 
 5. Configure Firewall Rules
-(or instead can run the bash script provided [here](<link>) at Virtual-No-Ads/raspi/iptables_conf.sh automatically):
+(or instead can run the bash script provided [here](<https://github.com/PoCInnovation/Virtual-No-Ads/blob/main/raspi>) at [Virtual-No-Ads/raspi/iptables_conf.sh](<https://github.com/PoCInnovation/Virtual-No-Ads/blob/main/raspi/iptables_conf.sh>) automatically):
 
 Flush existing rules and chains
 
