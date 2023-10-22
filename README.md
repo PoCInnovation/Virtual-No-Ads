@@ -8,13 +8,23 @@ Virtual No Ads is a project aimed at providing a more streamlined and pleasant b
 
 ## How does it work?
 
-[Explain how this project is working]
+As we connect a Raspberry Pi to Wi-Fi, it will intercept packets using the WireGuard protocol while filtering these packets to remove or sort ads; eventually emitting a Wi-Fi signal. Users can connect to this Wi-Fi network with any device, ensuring a secure network (thanks to WireGuard) and ad-free/ filtered content.
 
 ## Getting Started
 
 ### Installation
 
-If you want to create a executable, simply run the following command:
+# Raspberry Pi
+
+Clone this repository
+
+```
+git clone git@github.com:PoCInnovation/Virtual-No-Ads.git
+```
+
+Follow the instructions within the raspi [directory](<https://github.com/PoCInnovation/Virtual-No-Ads/tree/main/raspi>)
+
+Then, if you want to create a executable, simply run the following command:
 
 ```
 cargo build
@@ -27,10 +37,14 @@ The executable can be found at the following path: `target/debug/virtual-no-ads(
 If you simply want to start the application without compiling it, run the following command:
 
 ```
-cargo run
+cargo run <arguments>
 ```
 
 ### Usage
+
+```
+./virtual-no-ads <interface> <domain_list>...
+```
 
 Once Virtual No Ads is up and running, you can start browsing the web with fewer ads. If you encounter any issues or have questions about the project, please refer to the documentation or contact the project manager.
 
